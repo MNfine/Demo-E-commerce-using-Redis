@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+            font-family: "Arial", sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 450px;
+        }
+        .header {
+            background-color: #4d6b5f;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        label {
+            font-weight: bold;
+            width: 120px;
+            text-align: left;
+        }
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .admin-panel {
+            display: none;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4d6b5f;
+            color: white;
+        }
+        .button {
+            width: 40%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4d6b5f;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .delete_button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4d6b5f;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #3d554c;
+        }
+        .link {
+            margin-top: 15px;
+            text-align: right;
+            display: block;
+            color: #4f6b58;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-page" class="container">
+        <div class="header">PLEASE LOGIN</div>
+        <div class="form-group">
+            <label>ADMIN NAME</label>
+            <input type="text" id="login-adminname" placeholder="Admin name">
+        </div>
+        <div class="form-group">
+            <label>PASSWORD</label>
+            <input type="password" id="login-password" placeholder="Password">
+        </div>
+        <button class="button" onclick="adminLogin()">Login</button>
+        <p id="login-error" style="color: red;"></p>
+        <a class="link" href="http://127.0.0.1:5000">Back to User Login</a>
+    </div>
+
+    <div id="admin-panel" class="admin-panel">
+        <h2>Admin Panel</h2>
+        <p>Chào mừng, Admin!</p>
+        <h3>Danh sách người dùng</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="user-table-body">
+                <!-- Dữ liệu user sẽ được thêm vào đây -->
+            </tbody>
+            <button class="button" onclick="logout()">Logout</button>
+        </table>
+    </div>
+
+    <script>
+        async function adminLogin() {
+        const adminname = document.getElementById("login-adminname").value;
+        const password = document.getElementById("login-password").value;
+
+        const response = await fetch('/admin/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adminname, password }),
+        })
+        const result = await response.json();
+            if (response.ok) {
+                localStorage.setItem("session_id", result.session_id);
+                localStorage.setItem("admin_logged_in", "true");
+                alert("Login successful!");
+                showAdminPanel();
+                fetchUsers();
+            } else {
+                alert(result.error);
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById("admin-panel").style.display = "block";
+        }
+
+        function logout() {
+            localStorage.removeItem("admin_logged_in");
+            location.reload();
+        }
+
+        function fetchUsers() {
+            const sessionId = localStorage.getItem("session_id");
+
+            fetch("/users", {
+                headers: {
+                    "Authorization": sessionId
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Unauthorized or failed to fetch users.");
+                }
+            return response.json();
+            })
+            .then(users => {
+                const tableBody = document.getElementById("user-table-body");
+                tableBody.innerHTML = "";
+                users.forEach(user => {
+                const row = `<tr>
+                    <td>${user.role || '-'}</td>
+                    <td>${user.username || '-'}</td>
+                    <td>${user.email || '-'}</td>
+                    <td>${user.phone || '-'}</td>
+                    <td><button class='delete_button' onclick="deleteUser('${user.username}')">Delete</button></td>
+                </tr>`;
+                tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => {
+            console.error("Error fetching users:", error);
+            });
+        }
+
+        function deleteUser(username) {
+        const session_id = localStorage.getItem("session_id"); // Lấy session_id từ localStorage
+
+        fetch(`/admin/delete_user`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": session_id  // Gửi session_id để xác thực
+            },
+            body: JSON.stringify({ username }) 
+        })
+        .then(response => response.json().then(data => ({ status: response.status, body: data })))
+        .then(({ status, body }) => {
+            Swal.fire({
+                icon: status === 200 ? "success" : "error",
+                title: status === 200 ? "Deleted!" : "Error",
+                text: body.message || body.error || "Unexpected error",
+                confirmButtonColor: "#d33",
+                confirmButtonText: "OK"
+            }).then(() => {
+                if (status === 200) {
+                   fetchUsers(); 
+                }
+            });
+        })
+        .catch(error => console.error("Error deleting user:", error));
+    }
+
+        window.onload = function() {
+            const sessionId = localStorage.getItem("session_id");
+            const isAdmin = localStorage.getItem("admin_logged_in") === "true";
+
+            if (isAdmin && sessionId) {
+                showAdminPanel();
+                fetchUsers();
+            } else {
+            console.warn("Admin not logged in or session missing");
+            }
+        };
+
+    </script>
+</body>
+</html>

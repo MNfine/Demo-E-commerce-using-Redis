@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+            font-family: "Arial", sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 450px;
+        }
+        .header {
+            background-color: #4d6b5f;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        label {
+            font-weight: bold;
+            width: 120px;
+            text-align: left;
+        }
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-left: 100px;
+        }
+        .checkbox-container label {
+            margin-right: 180px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .button {
+            width: 40%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4d6b5f;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #3d554c;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+            color: #4f6b58;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+        .signup-container {
+            background: #4d6b5f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+            color: white;
+        }
+        .signup-container input {
+            background: white;
+            color: black;
+        }
+        .forgotpassword-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 450px;
+        }
+        .link {
+            margin-top: 15px;
+            text-align: right;
+            display: block;
+            color: #4f6b58;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        h2 {
+            font-style: italic;
+            color: #4d6b5f;
+        }
+        .description {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .option {
+            display: block;
+            background-color: #555;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .or {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .other-button {
+            background: #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .input-group input {
+            flex-grow: 2;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 230px;
+            margin-right: 10px;
+        }
+
+        .send-button {
+            flex-grow: 0;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4d6b5f;
+            color: white;
+            cursor: pointer;
+            min-width: 20px;
+        }
+
+        .send-button:hover {
+            background-color: #3d554c;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="user_login-page" class="container">
+        <div class="header">PLEASE LOGIN</div>
+        <div class="form-group">
+            <label>USER NAME</label>
+            <input type="text" id="login-username" placeholder="User name">
+        </div>
+        <div class="form-group">
+            <label>PASSWORD</label>
+            <input type="password" id="login-password" placeholder="Password">
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+        </div>
+        <div class="button-container">
+            <button class="button" onclick="redirectToSignup()">Sign-up</button>
+            <button class="button" onclick="login()">Login</button>
+        </div>
+        <div class="forgot-password" onclick="redirectToForgotPassword()">Forgot password?</div>
+        <a class="link" href="http://127.0.0.1:5000/admin">Admin</a>
+    </div>
+
+    <div id="user_signup-page" class="signup-container hidden">
+        <div class="header">WELCOME TO US</div>
+        <div class="form-group">
+            <label>USER NAME</label>
+            <input type="text" id="signup-username" placeholder="User name">
+        </div>
+        <div class="form-group">
+            <label>PASSWORD</label>
+            <input type="password" id="signup-password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label>EMAIL</label>
+            <input type="email" id="signup-email" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label>PHONE</label>
+            <input type="text" id="signup-phone" placeholder="Phone">
+        </div>
+        <button class="button" onclick="redirectToLogin()">Back</button>
+        <button class="button" onclick="signup()">Sign-up</button>
+    </div>
+
+    <div id="user_forgotpassword-page" class="container hidden">
+        <div class="header">Forgot Password</div>
+        <p>How do you want to get the code to reset your password?</p>
+        <div class="form-group">
+            <label>Send code to</label>
+            <div class="input-group">
+                <input type="email" id="forgot-email" placeholder="Email">
+                <button class="button send-button" onclick="sendCode('email')">Send</button>
+            </div>
+        </div>
+        
+        <p>OR</p>
+        
+        <div class="form-group">
+            <label>Send code to</label>
+            <div class="input-group">
+                <input type="text" id="forgot-phone" placeholder="Phone">
+                <button class="button send-button" onclick="sendCode('phone')">Send</button>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button class="button other-button" onclick="otherOptions()">Other</button>
+        </div>
+        
+        <div class="forgot-password" onclick="redirectToLogin()">← Back</div>
+    </div>
+
+    <script>
+        async function sendCode(method) {
+            const inputField = method === "email" ? document.getElementById("forgot-email") : document.getElementById("forgot-phone");
+            const value = inputField.value.trim();
+
+            if (!value) {
+                alert("Please enter your " + method);
+                return;
+            }
+
+            try {
+                const response = await fetch("/send_code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ method, value })
+                });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message);
+                window.location.href = `?page=otp&method=${method}&value=${encodeURIComponent(value)}`;
+            } else {
+                alert(result.error);
+            }
+            } catch (error) {
+                alert("An error occurred. Please try again.");
+            }
+        }
+
+        function otherOptions() {
+            alert("Other options coming soon!");
+        }
+
+        function redirectToSignup() {
+            window.location.href = "?page=user_signup";
+        }
+
+        function redirectToLogin() {
+            window.location.href = "?page=user_login";
+        }
+
+        function redirectToForgotPassword() {
+            window.location.href = "?page=user_forgotpassword";
+        }
+
+        async function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            const response = await fetch('/user/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                localStorage.setItem("session_id", result.session_id);
+                alert("Login successful!");
+                window.location.href = "/products";
+            } else {
+                alert(result.error);
+            }
+        }
+
+        async function signup() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const email = document.getElementById('signup-email').value;
+            const phone = document.getElementById('signup-phone').value;
+
+            const response = await fetch('/user/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, email, phone })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (response.ok) redirectToLogin();
+        }
+
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            const page = params.get("page");
+
+            if (page === "user_signup") {
+                document.getElementById('user_login-page').classList.add('hidden');
+                document.getElementById('user_forgotpassword-page').classList.add('hidden');
+                document.getElementById('user_signup-page').classList.remove('hidden');
+            }
+            if (page === "user_login") {
+                    document.getElementById('user_signup-page').classList.add('hidden');
+                    document.getElementById('user_forgotpassword-page').classList.add('hidden');
+                    document.getElementById('user_login-page').classList.remove('hidden');
+            } 
+            if (page === "user_forgotpassword") {
+                document.getElementById('user_signup-page').classList.add('hidden');
+                document.getElementById('user_login-page').classList.add('hidden');
+                document.getElementById('user_forgotpassword-page').classList.remove('hidden');
+            }
+        };
+    </script>
+</body>
+</html>
