@@ -76,18 +76,21 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .delete_button {
+        .button:hover {
+            background-color: #3d554c;
+        }
+        .button-delete {
             width: 100%;
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #4d6b5f;
+            background-color: #ff6044;
             color: white;
             font-size: 16px;
             cursor: pointer;
         }
-        .button:hover {
-            background-color: #3d554c;
+        .button-delete:hover {
+            background-color: #f83e1e;
         }
         .link {
             margin-top: 15px;
@@ -191,7 +194,7 @@
                     <td>${user.username || '-'}</td>
                     <td>${user.email || '-'}</td>
                     <td>${user.phone || '-'}</td>
-                    <td><button class='delete_button' onclick="deleteUser('${user.username}')">Delete</button></td>
+                    <td><button class='button-delete' onclick="deleteUser('${user.username}')">Delete</button></td>
                 </tr>`;
                 tableBody.innerHTML += row;
                 });
@@ -218,7 +221,7 @@
                 icon: status === 200 ? "success" : "error",
                 title: status === 200 ? "Deleted!" : "Error",
                 text: body.message || body.error || "Unexpected error",
-                confirmButtonColor: "#add8e6",
+                confirmButtonColor: "#3399ff",
                 confirmButtonText: "OK"
             }).then(() => {
                 if (status === 200) {

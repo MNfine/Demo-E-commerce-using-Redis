@@ -102,6 +102,19 @@ button {
 button:hover {
     background-color: #3d554c;
 }
+
+.button-delete {
+    background-color: #ff6044;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-delete:hover {
+    background-color: #f83e1e;
+}
 .icons {
     font-size: 20px;
     cursor: pointer;
@@ -168,12 +181,15 @@ button:hover {
 }
 
 .cart-remove {
-    background-color: red;
+    background-color: #ff6044;
     color: white;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
     font-size: 14px;
+}
+.cart-remove:hover {
+    background-color: #f83e1e;
 }
 
 .chat-button {

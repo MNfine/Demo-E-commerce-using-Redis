@@ -36,7 +36,7 @@
             <h3 style="color: black">Your cart</h3>
             <ul id="cart-items"></ul>
             <button onclick="closeCart()">Close</button>
-            <button onclick="clearCart()" style="display: left">Clear Cart</button>
+            <button class="button-delete" onclick="clearCart()" style="display: left">Clear Cart</button>
         </div>             
     </header>
     <main>
@@ -145,7 +145,7 @@
                     let itemText = document.createElement("span");
                     itemText.innerHTML = `${item.name} <strong>x${item.quantity}</strong>`;
 
-                    let deleteButton = document.createElement("button");
+                    let deleteButton = document.createElement("button-delete");
                     deleteButton.textContent = "Delete";
                     deleteButton.classList.add("cart-remove");
                     deleteButton.onclick = () => removeFromCart(item.product_id);
