@@ -193,7 +193,7 @@
             .catch(error => console.error("Error clearing cart:", error));
         }
         // Dựa vào link ngrok để kết nối với server 
-        const socket = io("https://ecd4-101-99-36-202.ngrok-free.app", {
+        const socket = io("http://127.0.0.1:5000", {
             transports: ["websocket", "polling"],
             query: { session_id: localStorage.getItem("session_id") },
             pingInterval: 25000,  // Ping mỗi 25 giây
