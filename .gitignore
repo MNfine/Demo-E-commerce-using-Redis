@@ -1,2 +1,21 @@
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+
+# VS Code config
+.vscode/
+
+# Environment variables
+.env
+.env.*
+
+# Database files
+*.db
+*.sqlite3
+
+# Log files
+*.log
+
+# SQL dump
+*.sql
